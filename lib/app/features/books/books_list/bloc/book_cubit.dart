@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:bookstanis/app/features/books/bloc/books_view/book_state.dart';
-import 'package:bookstanis/app/features/books/bloc/books_view/interface/book_actions.dart';
+import 'package:bookstanis/app/features/books/books_list/bloc/book_state.dart';
+import 'package:bookstanis/app/features/books/books_list/bloc/interface/book_actions.dart';
 import 'package:bookstanis/app/features/books/models/book.dart';
 import 'package:bookstanis/app/features/books/services/interface/books_repository.dart';
 import 'package:bookstanis/app/shared/logs/interface/message_logger.dart';

@@ -1,4 +1,4 @@
-import 'package:bookstanis/app/features/books/widgets/books_list/start_rating.dart';
+import 'package:bookstanis/app/features/books/books_list/widgets/books_list/start_rating.dart';
 import 'package:flutter/material.dart';
 
 class BookCard extends StatelessWidget {

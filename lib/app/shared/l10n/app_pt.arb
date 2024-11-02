@@ -1,0 +1,9 @@
+{   
+    "@@locale": "pt",
+    "helloWorld": "Olá Mundo",
+    "@helloWorld": {},
+    "books": "Livros",
+    "@books": {},
+    "profile": "Perfil",
+    "@profile": {}
+}

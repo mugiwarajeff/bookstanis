@@ -1,6 +1,6 @@
 import 'package:bookstanis/app/features/books/models/book.dart';
-import 'package:bookstanis/app/features/books/widgets/books_list/book_card.dart';
-import 'package:bookstanis/app/features/books/widgets/books_list/book_loading_card.dart';
+import 'package:bookstanis/app/features/books/books_list/widgets/books_list/book_card.dart';
+import 'package:bookstanis/app/features/books/books_list/widgets/books_list/book_loading_card.dart';
 import 'package:flutter/material.dart';
 
 class BooksList extends StatelessWidget {
