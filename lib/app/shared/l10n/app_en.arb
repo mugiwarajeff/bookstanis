@@ -5,5 +5,11 @@
     "books": "Books",
     "@books": {},
     "profile": "Profile",
-    "@profile": {}
+    "@profile": {},
+    "signIn": "Sign In",
+    "@signIn": {},
+    "hello": "Hello",
+    "@hello": {}
+    
+    
 }

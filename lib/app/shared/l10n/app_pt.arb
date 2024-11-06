@@ -5,5 +5,9 @@
     "books": "Livros",
     "@books": {},
     "profile": "Perfil",
-    "@profile": {}
+    "@profile": {},
+    "signIn": "Faça Login",
+    "@signIn": {},
+    "hello": "Olá",
+    "@hello": {}
 }
