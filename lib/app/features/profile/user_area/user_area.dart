@@ -1,4 +1,4 @@
-import 'package:bookstanis/app/features/login/models/user.dart';
+import 'package:bookstanis/app/features/profile/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -37,14 +37,14 @@ class UserArea extends StatelessWidget {
                 flex: 2,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed("/login");
+                      Navigator.of(context).pushNamed("/login");
                     },
                     child: Text(signInText)),
               );
             }
 
             return Text(
-              "$helloText, ${user!.nome}",
+              "$helloText, ${user!.name}",
               style: const TextStyle(fontSize: 24),
             );
           })

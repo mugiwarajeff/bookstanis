@@ -9,5 +9,11 @@
     "signIn": "Faça Login",
     "@signIn": {},
     "hello": "Olá",
-    "@hello": {}
+    "@hello": {},
+    "userName": "Usuário",
+    "@userName": {},
+    "password": "Senha",
+    "@password": {},
+    "enterWithGmail": "Entrar com Gmail",
+    "@enterWithGmail": {}
 }

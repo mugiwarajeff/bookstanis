@@ -9,7 +9,13 @@
     "signIn": "Sign In",
     "@signIn": {},
     "hello": "Hello",
-    "@hello": {}
+    "@hello": {},
+    "userName": "User Name",
+    "@userName": {},
+    "password": "Password",
+    "@password": {},
+    "enterWithGmail": "Enter with Gmail",
+    "@enterWithGmail": {}
     
     
 }
