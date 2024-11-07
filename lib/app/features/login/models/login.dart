@@ -1,10 +1,18 @@
+import 'package:bookstanis/app/features/login/models/value_objects/password.dart';
+import 'package:bookstanis/app/features/login/models/value_objects/username.dart';
+
 class Login {
-  String username;
-  String password;
+  Username username;
+  Password password;
 
   Login({required this.username, required this.password});
 
   Login.empty()
-      : username = "",
-        password = "";
+      : username = Username(value: ""),
+        password = Password(value: "");
+
+  @override
+  String toString() {
+    return "${username.value} and ${password.value}";
+  }
 }

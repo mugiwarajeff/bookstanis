@@ -14,8 +14,14 @@
     "@userName": {},
     "password": "Password",
     "@password": {},
-    "enterWithGmail": "Enter with Gmail",
-    "@enterWithGmail": {}
+    "enterWithGmail": "Login with Gmail",
+    "@enterWithGmail": {},
+    "login": "Login",
+    "@login": {},
+    "forgotPassword": "Forgot Password?",
+    "@forgotPassword": {},
+    "cantBeEmpty": "Can't be Empty",
+    "@cantBeEmpty": {}
     
     
 }
