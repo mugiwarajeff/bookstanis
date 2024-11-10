@@ -1,16 +1,24 @@
-import 'package:bookstanis/app/features/login/login_form.dart';
-import 'package:bookstanis/app/features/login/models/login.dart';
+import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
+import 'package:bookstanis/app/features/login/bloc/login_state.dart';
+import 'package:bookstanis/app/features/login/widgets/login_form.dart';
+import 'package:bookstanis/app/shared/widgets/show_custom_snackbar.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Login login = Login.empty();
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
     final Color secondaryColor = Theme.of(context).colorScheme.secondary;
+
+    LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
+
+    loginCubit.loadLoginForm();
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -39,8 +47,31 @@ class LoginView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            LoginForm(
-              login: login,
+            BlocConsumer<LoginCubit, LoginState>(
+              bloc: loginCubit,
+              builder: (context, state) {
+                if (state is StandardLoginState) {
+                  return LoginForm(
+                    loginCubit: loginCubit,
+                    login: state.login,
+                  );
+                }
+
+                return Container();
+              },
+              listener: (context, state) {
+                if (state is SuccessFormState) {
+                  showCustomSnackBar(
+                    context,
+                    message: state.successMessage,
+                  );
+                }
+
+                if (state is FailedFormState) {
+                  showCustomSnackBar(context,
+                      message: state.errorMesage, color: Colors.red);
+                }
+              },
             ),
           ],
         ),

@@ -4,8 +4,10 @@ import 'package:bookstanis/app/features/books/books_list/bloc/book_cubit.dart';
 import 'package:bookstanis/app/features/books/services/book_repository_local.dart';
 import 'package:bookstanis/app/features/books/services/interface/books_repository.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
+import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/shared/logs/impl_message_logger.dart';
 import 'package:bookstanis/app/shared/logs/interface/message_logger.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +15,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BookRepositoryLocal booksRepository = BookRepositoryLocal();
   await booksRepository.loadRepository();
+
+  await Firebase.initializeApp();
 
   runApp(MultiRepositoryProvider(
       providers: [
@@ -33,5 +37,6 @@ void main() async {
                 RepositoryProvider.of<MessageLogger>(context))),
         BlocProvider<ConfigurationsCubit>(
             create: (context) => ConfigurationsCubit()),
+        BlocProvider<LoginCubit>(create: (context) => LoginCubit()),
       ], child: const BookstanisApp())));
 }

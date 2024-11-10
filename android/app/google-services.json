@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "745423035196",
+    "project_id": "bookstanis",
+    "storage_bucket": "bookstanis.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745423035196:android:984de194849e2951f29c39",
+        "android_client_info": {
+          "package_name": "com.br.bookstanis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745423035196-lchd9bafmeb0g608elh0m7ll9d8m0n0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ-cf0gNfNwLQwb5s9hthkEu-v8OWUpAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745423035196-lchd9bafmeb0g608elh0m7ll9d8m0n0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
