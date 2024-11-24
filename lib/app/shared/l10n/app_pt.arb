@@ -37,5 +37,9 @@
     "invalidEmail": "Formato de E-mail Inválido",
     "@invalidEmail": {},
     "invalidPhone": "Formato de Telefone Inválido",
-    "@invalidPhone": {}
+    "@invalidPhone": {},
+    "confirm": "Confirmar",
+    "@confirm": {},
+    "cancel": "Cancelar",
+    "@cancel": {}
 }

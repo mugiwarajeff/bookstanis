@@ -24,6 +24,7 @@ class LoginView extends StatelessWidget {
         body: SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [primaryColor, secondaryColor],
@@ -59,7 +60,11 @@ class LoginView extends StatelessWidget {
           }
 
           if (state is SignUpFormState) {
-            return SignupForm(signup: state.signup);
+            return Center(
+                child: SignupForm(
+              signup: state.signup,
+              loginCubit: loginCubit,
+            ));
           }
 
           return const SizedBox.shrink();
