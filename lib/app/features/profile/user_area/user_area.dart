@@ -1,7 +1,5 @@
-import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/profile/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserArea extends StatelessWidget {
@@ -16,8 +14,6 @@ class UserArea extends StatelessWidget {
 
     final String signInText = AppLocalizations.of(context)!.signIn;
     final String helloText = AppLocalizations.of(context)!.hello;
-
-    final LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
 
     CircleAvatar userImageBuilder(User? user) {
       if (user == null) {
@@ -82,11 +78,6 @@ class UserArea extends StatelessWidget {
                   "$helloText, ${user!.firstName}",
                   style: const TextStyle(fontSize: 24),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      loginCubit.logoutCurrentUser();
-                    },
-                    child: Text("(logout)"))
               ],
             );
           })

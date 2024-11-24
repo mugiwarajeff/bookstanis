@@ -1,3 +1,4 @@
+import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_states.dart';
 import 'package:bookstanis/app/features/profile/user_area/user_area.dart';
@@ -10,6 +11,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileCubit profileCubit = BlocProvider.of<ProfileCubit>(context);
+    final LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
 
     return BlocBuilder<ProfileCubit, ProfileState>(
       bloc: profileCubit,
@@ -19,7 +21,20 @@ class ProfileView extends StatelessWidget {
             children: [
               UserArea(
                 user: state.user,
-              )
+              ),
+              Visibility(
+                  visible: state.user != null,
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            loginCubit.logoutCurrentUser();
+                          },
+                          child: const Text("Sair")),
+                    ),
+                  ))
             ],
           );
         }
