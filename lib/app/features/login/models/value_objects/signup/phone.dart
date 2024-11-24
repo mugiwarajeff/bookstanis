@@ -9,7 +9,7 @@ class Phone extends ValueObject<String> {
     String? error;
     final phoneRegex = RegExp(r"^\+?[\d\s()-]{7,15}$");
 
-    if (phoneRegex.hasMatch(value ?? "")) {
+    if (value != null && value.isNotEmpty && !phoneRegex.hasMatch(value)) {
       error = appLocalizations.invalidPhone;
     }
 

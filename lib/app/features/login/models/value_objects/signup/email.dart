@@ -14,7 +14,7 @@ class Email extends ValueObject<String> {
       error = appLocalizations.cantBeEmpty;
     }
 
-    if (emailRegex.hasMatch(value ?? "")) {
+    if (!emailRegex.hasMatch(value ?? "")) {
       error = appLocalizations.invalidEmail;
     }
 

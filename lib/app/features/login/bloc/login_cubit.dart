@@ -29,6 +29,16 @@ class LoginCubit extends Cubit<LoginState> {
     emit(SignUpFormState(signup: _signup!));
   }
 
+  bool validadePassword() {
+    bool valid = false;
+
+    if (_signup!.firstPassword.value == _signup!.secondPassword.value) {
+      valid = true;
+    }
+
+    return valid;
+  }
+
   void showSuccessMessage() {
     emit(SuccessFormState(successMessage: "Sucesso ao logar conta"));
     emit(StandardLoginState(login: _login!));

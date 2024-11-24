@@ -1,12 +1,21 @@
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/login/models/signup.dart';
+import 'package:bookstanis/app/shared/widgets/show_custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SignupForm extends StatelessWidget {
+class SignupForm extends StatefulWidget {
   final Signup signup;
   final LoginCubit loginCubit;
   const SignupForm({super.key, required this.signup, required this.loginCubit});
+
+  @override
+  State<SignupForm> createState() => _SignupFormState();
+}
+
+class _SignupFormState extends State<SignupForm> {
+  bool passwordVisible = false;
+  bool confirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +41,7 @@ class SignupForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        height: mediaSize.height * 0.7,
+        height: mediaSize.height * 0.75,
         width: mediaSize.width,
         decoration: BoxDecoration(
             boxShadow: [
@@ -46,6 +55,7 @@ class SignupForm extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: onPrimaryColor.withOpacity(0.6)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               signUpText,
@@ -55,153 +65,187 @@ class SignupForm extends StatelessWidget {
                   fontFamily: "Granada-Serial",
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Form(
-                key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextFormField(
-                          initialValue: signup.firstName.value,
-                          onChanged: (value) {
-                            signup.firstName.value = value;
-                          },
-                          validator: (value) => signup.firstName
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(firstNameText),
-                              hintText: firstNameText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          initialValue: signup.lastName.value,
-                          onChanged: (value) {
-                            signup.lastName.value = value;
-                          },
-                          validator: (value) => signup.lastName
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(lastNameText),
-                              hintText: lastNameText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          initialValue: signup.email.value,
-                          onChanged: (value) {
-                            signup.email.value = value;
-                          },
-                          validator: (value) => signup.email
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(emailText),
-                              hintText: emailText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          initialValue: signup.firstPassword.value,
-                          onChanged: (value) {
-                            signup.firstPassword.value = value;
-                          },
-                          validator: (value) => signup.firstPassword
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(passwordText),
-                              hintText: passwordText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          initialValue: signup.secondPassword.value,
-                          onChanged: (value) {
-                            signup.secondPassword.value = value;
-                          },
-                          validator: (value) => signup.secondPassword
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(confirmPasswordText),
-                              hintText: confirmPasswordText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          initialValue: signup.phone.value,
-                          onChanged: (value) {
-                            signup.phone.value = value;
-                          },
-                          validator: (value) => signup.phone
-                              .validate(value, AppLocalizations.of(context)!),
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              label: Text(phoneText),
-                              hintText: phoneText),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        OverflowBar(
-                          alignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  loginCubit.loadLoginForm();
-                                },
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStatePropertyAll(errorColor)),
-                                child: Text(
-                                  cancelText,
-                                  style: TextStyle(color: onErrorColor),
-                                )),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (!(formKey.currentState?.validate() ??
-                                    false)) {
-                                  return;
-                                }
-
-                                print("fazendo algo");
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll(primaryColor)),
-                              child: Text(
-                                confirmText,
-                                style: TextStyle(color: onPrimaryColor),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+            Expanded(
+              child: Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            initialValue: widget.signup.firstName.value,
+                            onChanged: (value) {
+                              widget.signup.firstName.value = value;
+                            },
+                            validator: (value) => widget.signup.firstName
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(firstNameText),
+                                hintText: firstNameText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            initialValue: widget.signup.lastName.value,
+                            onChanged: (value) {
+                              widget.signup.lastName.value = value;
+                            },
+                            validator: (value) => widget.signup.lastName
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(lastNameText),
+                                hintText: lastNameText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            initialValue: widget.signup.email.value,
+                            onChanged: (value) {
+                              widget.signup.email.value = value;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) => widget.signup.email
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(emailText),
+                                hintText: emailText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            initialValue: widget.signup.firstPassword.value,
+                            onChanged: (value) {
+                              widget.signup.firstPassword.value = value;
+                            },
+                            obscureText: !passwordVisible,
+                            validator: (value) => widget.signup.firstPassword
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        passwordVisible = !passwordVisible;
+                                      });
+                                    },
+                                    icon: Icon(!passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off)),
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(passwordText),
+                                hintText: passwordText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            obscureText: !confirmPasswordVisible,
+                            initialValue: widget.signup.secondPassword.value,
+                            onChanged: (value) {
+                              widget.signup.secondPassword.value = value;
+                            },
+                            validator: (value) => widget.signup.secondPassword
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        confirmPasswordVisible =
+                                            !confirmPasswordVisible;
+                                      });
+                                    },
+                                    icon: Icon(!confirmPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off)),
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(confirmPasswordText),
+                                hintText: confirmPasswordText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            initialValue: widget.signup.phone.value,
+                            onChanged: (value) {
+                              widget.signup.phone.value = value;
+                            },
+                            keyboardType: TextInputType.phone,
+                            validator: (value) => widget.signup.phone
+                                .validate(value, AppLocalizations.of(context)!),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                label: Text(phoneText),
+                                hintText: phoneText),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
                     ),
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: OverflowBar(
+                alignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        widget.loginCubit.loadLoginForm();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(errorColor)),
+                      child: Text(
+                        cancelText,
+                        style: TextStyle(color: onErrorColor),
+                      )),
+                  const SizedBox(
+                    width: 15,
                   ),
-                )),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (!(formKey.currentState?.validate() ?? false)) {
+                        return;
+                      }
+                      bool valid = widget.loginCubit.validadePassword();
+
+                      if (!valid) {
+                        showCustomSnackBar(context,
+                            message: "Senhas digitas não são iguais",
+                            color: errorColor);
+                        return;
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(primaryColor)),
+                    child: Text(
+                      confirmText,
+                      style: TextStyle(color: onPrimaryColor),
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
