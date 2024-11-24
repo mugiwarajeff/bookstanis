@@ -132,6 +132,8 @@ class _LoginFormState extends State<LoginForm> {
                       if (!(formKey.currentState?.validate() ?? false)) {
                         return;
                       }
+
+                      widget.loginCubit.signIn(AppLocalizations.of(context)!);
                     }),
                 const SizedBox(
                   height: 15,

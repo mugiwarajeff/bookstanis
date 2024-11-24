@@ -36,3 +36,10 @@ class FailedFormState extends LoginState {
 }
 
 class SuccessOnRegisterUser extends LoginState {}
+
+class FailedOnRegisterUser extends LoginState {
+  String? message;
+  String? errorCode;
+
+  FailedOnRegisterUser({required this.message, required this.errorCode});
+}

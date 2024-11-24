@@ -44,7 +44,9 @@ void main() async {
                 RepositoryProvider.of<MessageLogger>(context))),
         BlocProvider<ConfigurationsCubit>(
             create: (context) => ConfigurationsCubit()),
-        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()),
+        BlocProvider<ProfileCubit>(
+            create: (context) =>
+                ProfileCubit(RepositoryProvider.of<AuthService>(context))),
         BlocProvider<LoginCubit>(
             create: (context) => LoginCubit(
                 RepositoryProvider.of<AuthService>(context),

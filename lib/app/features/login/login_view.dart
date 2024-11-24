@@ -3,7 +3,7 @@ import 'package:bookstanis/app/features/login/bloc/login_state.dart';
 import 'package:bookstanis/app/features/login/widgets/login_form.dart';
 import 'package:bookstanis/app/features/login/widgets/signup_form.dart';
 import 'package:bookstanis/app/shared/widgets/show_custom_snackbar.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +15,11 @@ class LoginView extends StatelessWidget {
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
     final Color secondaryColor = Theme.of(context).colorScheme.secondary;
+    final Color errorColor = Theme.of(context).colorScheme.error;
+
+    final String weakPasswordText = AppLocalizations.of(context)!.weakPassword;
+    final String emailAlreadyInUseText =
+        AppLocalizations.of(context)!.emailAlreadyInUse;
 
     LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
 
@@ -90,19 +95,31 @@ class LoginView extends StatelessWidget {
           return const SizedBox.shrink();
         }, listener: (context, state) {
           if (state is SuccessFormState) {
-            showCustomSnackBar(
-              context,
-              message: state.successMessage,
-            );
+            Navigator.of(context).pushReplacementNamed("/");
           }
 
           if (state is FailedFormState) {
+            if (state.errorMesage == "invalid-credential" ||
+                state.errorMesage == "invalid-email") {}
             showCustomSnackBar(context,
-                message: state.errorMesage, color: Colors.red);
+                message: AppLocalizations.of(context)!.userOrPasswordIncorrect,
+                color: Colors.red);
           }
 
           if (state is SuccessOnRegisterUser) {
             Navigator.of(context).pushReplacementNamed("/");
+          }
+
+          if (state is FailedOnRegisterUser) {
+            if (state.errorCode == "email-already-in-use") {
+              showCustomSnackBar(context,
+                  message: emailAlreadyInUseText, color: errorColor);
+            }
+
+            if (state.errorCode == "weak-password") {
+              showCustomSnackBar(context,
+                  message: weakPasswordText, color: errorColor);
+            }
           }
         }),
       ),

@@ -45,5 +45,15 @@
     "typedPasswordNotSame": "Typed Password are not the same",
     "@typedPasswordNotSame": {},
     "registeringUser": "Registering User",
-    "@registeringUser": {}
+    "@registeringUser": {},
+    "weakPassword": "Weak Password, try another",
+    "@weakPassword": {},
+    "emailAlreadyInUse": "Already Exists a account with this e-mail",
+    "@emailAlreadyInUse": {},
+    "userLogged": "User logger with success",
+    "@userLogged": {},
+    "loggingIn": "Logging In...",
+    "@loggingIn": {},
+    "userOrPasswordIncorrect": "User or Password is incorrect!",
+    "@userOrPasswordIncorrect": {}
 }

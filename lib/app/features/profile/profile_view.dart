@@ -24,13 +24,7 @@ class ProfileView extends StatelessWidget {
           );
         }
 
-        return const Column(
-          children: [
-            UserArea(
-              user: null,
-            )
-          ],
-        );
+        return const SizedBox.shrink();
       },
     );
   }
