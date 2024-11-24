@@ -7,9 +7,6 @@ class UserArea extends StatelessWidget {
 
   const UserArea({super.key, required this.user});
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -19,33 +16,42 @@ class UserArea extends StatelessWidget {
     final String helloText = AppLocalizations.of(context)!.hello;
 
     CircleAvatar userImageBuilder(User? user) {
-    if(user == null){
-
-     return CircleAvatar(
+      if (user == null) {
+        return CircleAvatar(
             radius: 35,
             backgroundColor: primaryColor,
             foregroundColor: onPrimaryColor,
             backgroundImage: const AssetImage(
-                    "assets/images/user_profile.png",) );
-    }
+              "assets/images/user_profile.png",
+            ));
+      }
 
-    if(user.imageUrl == null){
+      if (user.imageUrl == null) {
+        String firstName = user.firstName.isNotEmpty
+            ? user.firstName.substring(0, 1)
+            : user.firstName.substring(0);
+        String lastname = user.lastName.isNotEmpty
+            ? user.lastName.substring(0, 1)
+            : user.lastName.substring(0);
+
+        return CircleAvatar(
+          radius: 35,
+          backgroundColor: primaryColor,
+          foregroundColor: onPrimaryColor,
+          child: Text(
+            "$firstName$lastname",
+            style: const TextStyle(fontSize: 32),
+          ),
+        );
+      }
 
       return CircleAvatar(
-            radius: 35,
-            backgroundColor: primaryColor,
-            foregroundColor: onPrimaryColor,
-            child: Text("${user.firstName.toUpperCase().substring(1)} ${user.lastName.toLowerCase().substring(1)}"),
-             );
+          radius: 35,
+          backgroundColor: primaryColor,
+          foregroundColor: onPrimaryColor,
+          backgroundImage: NetworkImage(user.imageUrl!));
     }
 
-    return CircleAvatar(
-            radius: 35,
-            backgroundColor: primaryColor,
-            foregroundColor: onPrimaryColor,
-            backgroundImage: NetworkImage(user.imageUrl!));
-
-  }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(

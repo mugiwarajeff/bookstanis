@@ -38,6 +38,8 @@ class _SignupFormState extends State<SignupForm> {
     final String confirmText = AppLocalizations.of(context)!.confirm;
     final String cancelText = AppLocalizations.of(context)!.cancel;
 
+    final String passwordAreNotTheSameText =
+        AppLocalizations.of(context)!.typedPasswordNotSame;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -231,10 +233,13 @@ class _SignupFormState extends State<SignupForm> {
 
                       if (!valid) {
                         showCustomSnackBar(context,
-                            message: "Senhas digitas não são iguais",
+                            message: passwordAreNotTheSameText,
                             color: errorColor);
                         return;
                       }
+
+                      widget.loginCubit
+                          .registerNewUser(AppLocalizations.of(context)!);
                     },
                     style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(primaryColor)),

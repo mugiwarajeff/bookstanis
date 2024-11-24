@@ -11,7 +11,11 @@ class StandardLoginState extends LoginState {
   StandardLoginState({required this.login});
 }
 
-class LoadingFormState extends LoginState {}
+class LoadingFormState extends LoginState {
+  final String loadingMessage;
+
+  LoadingFormState({required this.loadingMessage});
+}
 
 class SignUpFormState extends LoginState {
   Signup signup;
@@ -30,3 +34,5 @@ class FailedFormState extends LoginState {
 
   FailedFormState({required this.errorMesage});
 }
+
+class SuccessOnRegisterUser extends LoginState {}

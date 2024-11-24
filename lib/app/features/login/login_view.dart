@@ -67,6 +67,26 @@ class LoginView extends StatelessWidget {
             ));
           }
 
+          if (state is LoadingFormState) {
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  semanticsLabel: state.loadingMessage,
+                  color: onPrimaryColor,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  state.loadingMessage,
+                  style: TextStyle(color: onPrimaryColor, fontSize: 18),
+                )
+              ],
+            ));
+          }
+
           return const SizedBox.shrink();
         }, listener: (context, state) {
           if (state is SuccessFormState) {
@@ -79,6 +99,10 @@ class LoginView extends StatelessWidget {
           if (state is FailedFormState) {
             showCustomSnackBar(context,
                 message: state.errorMesage, color: Colors.red);
+          }
+
+          if (state is SuccessOnRegisterUser) {
+            Navigator.of(context).pushReplacementNamed("/");
           }
         }),
       ),

@@ -1,13 +1,22 @@
 import 'package:bookstanis/app/features/login/bloc/login_state.dart';
 import 'package:bookstanis/app/features/login/models/login.dart';
 import 'package:bookstanis/app/features/login/models/signup.dart';
+import 'package:bookstanis/app/features/login/service/interface/auth_service.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
+import 'package:bookstanis/app/features/profile/models/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginCubit extends Cubit<LoginState> {
+  final AuthService _authService;
+  final ProfileCubit _profileCubit;
   Login? _login;
   Signup? _signup;
 
-  LoginCubit() : super(InitialLoginState());
+  LoginCubit(AuthService authService, ProfileCubit profileCubit)
+      : _authService = authService,
+        _profileCubit = profileCubit,
+        super(InitialLoginState());
 
   void loadLoginForm() {
     _login = Login.empty();
@@ -27,6 +36,20 @@ class LoginCubit extends Cubit<LoginState> {
     }
 
     emit(SignUpFormState(signup: _signup!));
+  }
+
+  Future<void> registerNewUser(AppLocalizations appLocalizations) async {
+    if (_signup == null) {
+      return;
+    }
+
+    emit(LoadingFormState(loadingMessage: appLocalizations.registeringUser));
+
+    User newUser = await _authService.registerUser(_signup!);
+
+    _profileCubit.setCurrentUser(newUser);
+
+    emit(SuccessOnRegisterUser());
   }
 
   bool validadePassword() {

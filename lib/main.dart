@@ -5,9 +5,13 @@ import 'package:bookstanis/app/features/books/services/book_repository_local.dar
 import 'package:bookstanis/app/features/books/services/interface/books_repository.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
+import 'package:bookstanis/app/features/login/service/firebase_auth_service.dart';
+import 'package:bookstanis/app/features/login/service/interface/auth_service.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
 import 'package:bookstanis/app/shared/logs/impl_message_logger.dart';
 import 'package:bookstanis/app/shared/logs/interface/message_logger.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,13 +20,16 @@ void main() async {
   BookRepositoryLocal booksRepository = BookRepositoryLocal();
   await booksRepository.loadRepository();
 
-  await Firebase.initializeApp();
+  FirebaseApp app = await Firebase.initializeApp();
+  FirebaseAuth.instanceFor(app: app);
 
   runApp(MultiRepositoryProvider(
       providers: [
         RepositoryProvider<BooksRepository>(
           create: (context) => booksRepository,
         ),
+        RepositoryProvider<AuthService>(
+            create: (context) => FirebaseAuthService()),
         RepositoryProvider<MessageLogger>(
             create: (context) => ImplMessageLogger())
       ],
@@ -37,6 +44,10 @@ void main() async {
                 RepositoryProvider.of<MessageLogger>(context))),
         BlocProvider<ConfigurationsCubit>(
             create: (context) => ConfigurationsCubit()),
-        BlocProvider<LoginCubit>(create: (context) => LoginCubit()),
+        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()),
+        BlocProvider<LoginCubit>(
+            create: (context) => LoginCubit(
+                RepositoryProvider.of<AuthService>(context),
+                BlocProvider.of<ProfileCubit>(context))),
       ], child: const BookstanisApp())));
 }

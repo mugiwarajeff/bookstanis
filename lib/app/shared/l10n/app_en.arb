@@ -41,5 +41,9 @@
     "confirm": "Confirm",
     "@confirm": {},
     "cancel": "Cancel",
-    "@cancel": {}
+    "@cancel": {},
+    "typedPasswordNotSame": "Typed Password are not the same",
+    "@typedPasswordNotSame": {},
+    "registeringUser": "Registering User",
+    "@registeringUser": {}
 }
