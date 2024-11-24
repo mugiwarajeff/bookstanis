@@ -1,4 +1,4 @@
-{   
+{
     "@@locale": "en",
     "helloWorld": "Hello World",
     "@helloWorld": {},
@@ -21,7 +21,21 @@
     "forgotPassword": "Forgot Password?",
     "@forgotPassword": {},
     "cantBeEmpty": "Can't be Empty",
-    "@cantBeEmpty": {}
-    
-    
+    "@cantBeEmpty": {},
+    "signup": "Sign Up",
+    "@signup": {},
+    "firstName": "First Name",
+    "@firstName": {},
+    "lastName": "Last Name",
+    "@lastName": {},
+    "confirmPass": "Confirm Password",
+    "@confirmPass": {},
+    "email": "E-mail",
+    "@email": {},
+    "phone": "Phone Number",
+    "@phone": {},
+    "invalidEmail": "Invalid E-mail Format",
+    "@invalidEmail": {},
+    "invalidPhone": "Invalid Phone Format",
+    "@invalidPhone": {}
 }

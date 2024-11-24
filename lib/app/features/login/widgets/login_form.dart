@@ -1,5 +1,6 @@
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/login/models/login.dart';
+import 'package:bookstanis/app/features/login/widgets/login_form/form_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,11 +22,13 @@ class _LoginFormState extends State<LoginForm> {
     final Size screenSize = MediaQuery.of(context).size;
     final String userNameText = AppLocalizations.of(context)!.userName;
     final String passwordText = AppLocalizations.of(context)!.password;
+
     final String enterWithGmailText =
         AppLocalizations.of(context)!.enterWithGmail;
     final String forgotPasswordText =
         AppLocalizations.of(context)!.forgotPassword;
     final String loginText = AppLocalizations.of(context)!.login;
+    final String signUpText = AppLocalizations.of(context)!.signup;
 
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
@@ -33,6 +36,8 @@ class _LoginFormState extends State<LoginForm> {
     const double fontPageSize = 16;
     const double buttonPageHeight = 50;
     const double buttonPageWidth = 500;
+
+    const double iconSize = 34;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Center(
@@ -111,72 +116,51 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(
                   height: 15,
                 ),
-                SizedBox(
-                    width: buttonPageWidth,
-                    height: buttonPageHeight,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (!(formKey.currentState?.validate() ?? false)) {
-                            return;
-                          }
-
-                          print("validando usuario");
-                          print(widget.login);
-                          widget.loginCubit.showFailedMessage();
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStatePropertyAll(primaryColor)),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Icon(
-                                Icons.login,
-                                color: onPrimaryColor,
-                                size: 34,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                loginText,
-                                style: TextStyle(
-                                    color: onPrimaryColor,
-                                    fontSize: fontPageSize),
-                              ),
-                            ),
-                          ],
-                        ))),
+                FormButton(
+                    buttonHeight: buttonPageHeight,
+                    buttonWidth: buttonPageWidth,
+                    fontSize: fontPageSize,
+                    labelText: loginText,
+                    backgroundColor: primaryColor,
+                    textColor: onPrimaryColor,
+                    buttonIcon: Icon(
+                      Icons.login,
+                      color: onPrimaryColor,
+                      size: iconSize,
+                    ),
+                    onTap: () {
+                      if (!(formKey.currentState?.validate() ?? false)) {
+                        return;
+                      }
+                    }),
                 const SizedBox(
                   height: 15,
                 ),
-                SizedBox(
-                    width: buttonPageWidth,
-                    height: buttonPageHeight,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          print("Ir com Gmail");
-                          widget.loginCubit.showSuccessMessage();
-                        },
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Image.asset(
-                                "assets/icons/login/gmail.png",
-                                height: 50,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                enterWithGmailText,
-                                style: const TextStyle(fontSize: fontPageSize),
-                              ),
-                            ),
-                          ],
-                        ))),
+                FormButton(
+                    buttonHeight: buttonPageHeight,
+                    buttonWidth: buttonPageWidth,
+                    fontSize: fontPageSize,
+                    labelText: signUpText,
+                    buttonIcon: const Icon(
+                      Icons.person_add,
+                      size: iconSize,
+                    ),
+                    onTap: () {
+                      widget.loginCubit.loadSignUpForm();
+                    }),
+                const SizedBox(
+                  height: 15,
+                ),
+                FormButton(
+                    buttonHeight: buttonPageHeight,
+                    buttonWidth: buttonPageWidth,
+                    fontSize: fontPageSize,
+                    labelText: enterWithGmailText,
+                    buttonIcon: Image.asset(
+                      "assets/icons/login/gmail.png",
+                      height: 50,
+                    ),
+                    onTap: () {}),
               ],
             ),
           ),

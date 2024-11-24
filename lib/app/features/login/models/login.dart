@@ -1,5 +1,5 @@
-import 'package:bookstanis/app/features/login/models/value_objects/password.dart';
-import 'package:bookstanis/app/features/login/models/value_objects/username.dart';
+import 'package:bookstanis/app/features/login/models/value_objects/login/password.dart';
+import 'package:bookstanis/app/features/login/models/value_objects/login/username.dart';
 
 class Login {
   Username username;

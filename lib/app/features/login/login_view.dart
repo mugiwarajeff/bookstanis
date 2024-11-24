@@ -1,6 +1,7 @@
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/login/bloc/login_state.dart';
 import 'package:bookstanis/app/features/login/widgets/login_form.dart';
+import 'package:bookstanis/app/features/login/widgets/signup_form.dart';
 import 'package:bookstanis/app/shared/widgets/show_custom_snackbar.dart';
 
 import 'package:flutter/material.dart';
@@ -28,53 +29,53 @@ class LoginView extends StatelessWidget {
                 colors: [primaryColor, secondaryColor],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/logo/bookstanis_logo.png",
-              height: 120,
-              color: onPrimaryColor.withOpacity(0.8),
-            ),
-            Text(
-              "BookStanis",
-              style: TextStyle(
-                  fontSize: 42,
+        child: BlocConsumer<LoginCubit, LoginState>(builder: (context, state) {
+          if (state is StandardLoginState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/logo/bookstanis_logo.png",
+                  height: 120,
                   color: onPrimaryColor.withOpacity(0.8),
-                  fontFamily: "Granada-Serial",
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            BlocConsumer<LoginCubit, LoginState>(
-              bloc: loginCubit,
-              builder: (context, state) {
-                if (state is StandardLoginState) {
-                  return LoginForm(
-                    loginCubit: loginCubit,
-                    login: state.login,
-                  );
-                }
+                ),
+                Text(
+                  "BookStanis",
+                  style: TextStyle(
+                      fontSize: 42,
+                      color: onPrimaryColor.withOpacity(0.8),
+                      fontFamily: "Granada-Serial",
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                LoginForm(
+                  loginCubit: loginCubit,
+                  login: state.login,
+                )
+              ],
+            );
+          }
 
-                return Container();
-              },
-              listener: (context, state) {
-                if (state is SuccessFormState) {
-                  showCustomSnackBar(
-                    context,
-                    message: state.successMessage,
-                  );
-                }
+          if (state is SignUpFormState) {
+            return SignupForm(signup: state.signup);
+          }
 
-                if (state is FailedFormState) {
-                  showCustomSnackBar(context,
-                      message: state.errorMesage, color: Colors.red);
-                }
-              },
-            ),
-          ],
-        ),
+          return const SizedBox.shrink();
+        }, listener: (context, state) {
+          if (state is SuccessFormState) {
+            showCustomSnackBar(
+              context,
+              message: state.successMessage,
+            );
+          }
+
+          if (state is FailedFormState) {
+            showCustomSnackBar(context,
+                message: state.errorMesage, color: Colors.red);
+          }
+        }),
       ),
     ));
   }

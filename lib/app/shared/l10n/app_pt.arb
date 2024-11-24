@@ -1,4 +1,4 @@
-{   
+{
     "@@locale": "pt",
     "helloWorld": "Olá Mundo",
     "@helloWorld": {},
@@ -17,9 +17,25 @@
     "enterWithGmail": "Login com Gmail",
     "@enterWithGmail": {},
     "login": "Login",
-    "@login": {}, 
+    "@login": {},
     "forgotPassword": "Esqueceu sua senha?",
     "@forgotPassword": {},
     "cantBeEmpty": "Não pode ser vazio",
-    "@cantBeEmpty": {}
+    "@cantBeEmpty": {},
+    "signup": "Registrar",
+    "@signup": {},
+    "firstName": "Nome",
+    "@firstName": {},
+    "lastName": "Sobrenome",
+    "@lastName": {},
+    "confirmPass": "Confirme a Senha",
+    "@confirmPass": {},
+    "email": "E-mail",
+    "@email": {},
+    "phone": "Telefone",
+    "@phone": {},
+    "invalidEmail": "Formato de E-mail Inválido",
+    "@invalidEmail": {},
+    "invalidPhone": "Formato de Telefone Inválido",
+    "@invalidPhone": {}
 }

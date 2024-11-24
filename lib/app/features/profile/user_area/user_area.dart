@@ -7,6 +7,9 @@ class UserArea extends StatelessWidget {
 
   const UserArea({super.key, required this.user});
 
+
+  
+
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -14,20 +17,40 @@ class UserArea extends StatelessWidget {
 
     final String signInText = AppLocalizations.of(context)!.signIn;
     final String helloText = AppLocalizations.of(context)!.hello;
+
+    CircleAvatar userImageBuilder(User? user) {
+    if(user == null){
+
+     return CircleAvatar(
+            radius: 35,
+            backgroundColor: primaryColor,
+            foregroundColor: onPrimaryColor,
+            backgroundImage: const AssetImage(
+                    "assets/images/user_profile.png",) );
+    }
+
+    if(user.imageUrl == null){
+
+      return CircleAvatar(
+            radius: 35,
+            backgroundColor: primaryColor,
+            foregroundColor: onPrimaryColor,
+            child: Text("${user.firstName.toUpperCase().substring(1)} ${user.lastName.toLowerCase().substring(1)}"),
+             );
+    }
+
+    return CircleAvatar(
+            radius: 35,
+            backgroundColor: primaryColor,
+            foregroundColor: onPrimaryColor,
+            backgroundImage: NetworkImage(user.imageUrl!));
+
+  }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 35,
-            backgroundColor: primaryColor,
-            foregroundColor: onPrimaryColor,
-            backgroundImage: user == null
-                ? const AssetImage(
-                    "assets/images/user_profile.png",
-                  )
-                : NetworkImage(user!.imageUrl),
-          ),
+          userImageBuilder(user),
           const SizedBox(
             width: 20,
           ),
@@ -44,7 +67,7 @@ class UserArea extends StatelessWidget {
             }
 
             return Text(
-              "$helloText, ${user!.name}",
+              "$helloText, ${user!.firstName}",
               style: const TextStyle(fontSize: 24),
             );
           })
