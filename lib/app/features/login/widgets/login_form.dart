@@ -162,7 +162,9 @@ class _LoginFormState extends State<LoginForm> {
                       "assets/icons/login/gmail.png",
                       height: 50,
                     ),
-                    onTap: () {}),
+                    onTap: () {
+                      widget.loginCubit.signInWithGoogle();
+                    }),
               ],
             ),
           ),

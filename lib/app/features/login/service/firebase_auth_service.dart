@@ -5,8 +5,11 @@ import 'package:bookstanis/app/features/login/service/exceptions/auth_exceptions
 import 'package:bookstanis/app/features/login/service/interface/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookstanis/app/features/profile/models/user.dart' as myUser;
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService implements AuthService {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Future<void> loginUser(Login login) async {
     try {
@@ -24,9 +27,20 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<void> loginUserWithGmail() {
-    // TODO: implement loginUserWithGmail
-    throw UnimplementedError();
+  Future<void> loginUserWithGmail() async {
+    GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+    if (googleUser == null) {
+      return;
+    }
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+    await _firebaseAuth.signInWithCredential(credential);
   }
 
   @override

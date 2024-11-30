@@ -78,6 +78,10 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  Future<void> signInWithGoogle() async {
+    await _authService.loginUserWithGmail();
+  }
+
   Future<void> logoutCurrentUser() async {
     await _authService.logoutUser();
   }
