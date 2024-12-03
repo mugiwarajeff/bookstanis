@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "745423035196-islr54p23himdq9nm8j96ino6a5t0hgt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.br.bookstanis",
+            "certificate_hash": "6286553e3152791f6816c7350299bdcbc24ae350"
+          }
+        },
+        {
           "client_id": "745423035196-lchd9bafmeb0g608elh0m7ll9d8m0n0m.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "745423035196-lchd9bafmeb0g608elh0m7ll9d8m0n0m.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "745423035196-dob62ahr4f8mqs5lfmirgl58efrdd6nv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.br.jeffdev.bookstanis"
+              }
             }
           ]
         }
