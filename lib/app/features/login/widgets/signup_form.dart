@@ -16,10 +16,10 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   bool passwordVisible = false;
   bool confirmPasswordVisible = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Size mediaSize = MediaQuery.of(context).size;
 
     final Color primaryColor = Theme.of(context).colorScheme.primary;

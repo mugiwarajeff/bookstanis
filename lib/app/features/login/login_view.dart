@@ -7,8 +7,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late LoginCubit loginCubit;
+  @override
+  void initState() {
+    super.initState();
+    loginCubit = BlocProvider.of<LoginCubit>(context);
+    loginCubit.loadLoginForm();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +33,6 @@ class LoginView extends StatelessWidget {
     final String weakPasswordText = AppLocalizations.of(context)!.weakPassword;
     final String emailAlreadyInUseText =
         AppLocalizations.of(context)!.emailAlreadyInUse;
-
-    LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
-
-    loginCubit.loadLoginForm();
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -100,9 +109,26 @@ class LoginView extends StatelessWidget {
 
           if (state is FailedFormState) {
             if (state.errorMesage == "invalid-credential" ||
-                state.errorMesage == "invalid-email") {}
+                state.errorMesage == "invalid-email") {
+              showCustomSnackBar(context,
+                  message:
+                      AppLocalizations.of(context)!.userOrPasswordIncorrect,
+                  color: Colors.red);
+              return;
+            }
+
+            if (state.errorMesage ==
+                    "account-exists-with-different-credential" ||
+                state.errorMesage == "invalid-email") {
+              showCustomSnackBar(context,
+                  message: AppLocalizations.of(context)!.logginMethodNotAllower,
+                  color: Colors.red);
+              return;
+            }
+
             showCustomSnackBar(context,
-                message: AppLocalizations.of(context)!.userOrPasswordIncorrect,
+                message:
+                    AppLocalizations.of(context)!.notPossibleToCompleteLoggin,
                 color: Colors.red);
           }
 

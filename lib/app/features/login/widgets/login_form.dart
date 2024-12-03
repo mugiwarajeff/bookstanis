@@ -163,7 +163,8 @@ class _LoginFormState extends State<LoginForm> {
                       height: 50,
                     ),
                     onTap: () {
-                      widget.loginCubit.signInWithGoogle();
+                      widget.loginCubit
+                          .signInWithGoogle(AppLocalizations.of(context)!);
                     }),
               ],
             ),

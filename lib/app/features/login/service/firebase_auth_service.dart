@@ -16,31 +16,70 @@ class FirebaseAuthService implements AuthService {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: login.username.value, password: login.password.value);
     } on FirebaseAuthException catch (e) {
-      if (e.code == "invalid-email") {
-        throw InvalidEmail(e.message ?? "", e.code);
-      }
-
-      if (e.code == "invalid-credential") {
-        throw InvalidCredentials(e.message ?? "", e.code);
-      }
+      _handleLoginErros(e.code, e.message ?? "");
     }
   }
 
   @override
   Future<void> loginUserWithGmail() async {
-    GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    try {
+      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
-    if (googleUser == null) {
-      return;
+      if (googleUser == null) {
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      _handleLoginErros(e.code, e.message ?? "");
+    }
+  }
+
+  void _handleLoginErros(String code, String message) {
+    if (code == "invalid-email") {
+      throw InvalidEmail(message, code);
     }
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    if (code == "invalid-credential") {
+      throw InvalidCredentials(message, code);
+    }
+    if (code == "account-exists-with-different-credential") {
+      throw AccountExistsWithDifferentCredential(message, code);
+    }
 
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+    if (code == "invalid-credential") {
+      throw InvalidCredentials(message, code);
+    }
 
-    await _firebaseAuth.signInWithCredential(credential);
+    if (code == "operation-not-allowed") {
+      throw OperationNotAllowed(message, code);
+    }
+
+    if (code == "user-disabled") {
+      throw UserDisabled(message, code);
+    }
+
+    if (code == "user-not-found") {
+      throw UserNotFound(message, code);
+    }
+
+    if (code == "wrong-password") {
+      throw WrongPassword(message, code);
+    }
+
+    if (code == "invalid-verification-code") {
+      throw InvalidVerificationCode(message, code);
+    }
+
+    if (code == "invalid-verification-id") {
+      throw InvalidVerificationId(message, code);
+    }
   }
 
   @override
@@ -83,6 +122,7 @@ class FirebaseAuthService implements AuthService {
   Future<void> listenStateChange(
       void Function(myUser.User? user) setUserCallback) async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      print("mudou");
       if (user == null) {
         setUserCallback(null);
         return;
@@ -96,6 +136,7 @@ class FirebaseAuthService implements AuthService {
   Future<void> listenUserChange(
       void Function(myUser.User? user) setUserCallback) async {
     FirebaseAuth.instance.userChanges().listen((User? user) {
+      print("mudou");
       if (user == null) {
         setUserCallback(null);
         return;

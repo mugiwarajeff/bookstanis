@@ -55,5 +55,9 @@
     "loggingIn": "Logging In...",
     "@loggingIn": {},
     "userOrPasswordIncorrect": "User or Password is incorrect!",
-    "@userOrPasswordIncorrect": {}
+    "@userOrPasswordIncorrect": {},
+    "logginMethodNotAllower": "Loggin method not allowed, try another",
+    "@logginMethodNotAllower": {},
+    "notPossibleToCompleteLoggin": "Was not possible to complete the Loggin, verify with administrator",
+    "@notPossibleToCompleteLoggin": {}
 }

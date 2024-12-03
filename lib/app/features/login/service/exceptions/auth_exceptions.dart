@@ -39,3 +39,66 @@ class WeakPassword extends AuthExceptions {
     return "WeakPassword: $message";
   }
 }
+
+class OperationNotAllowed extends AuthExceptions {
+  OperationNotAllowed(super.message, super.code);
+
+  @override
+  String toString() {
+    return "OperationNotAllowed: $message";
+  }
+}
+
+class AccountExistsWithDifferentCredential extends AuthExceptions {
+  AccountExistsWithDifferentCredential(super.message, super.code);
+
+  @override
+  String toString() {
+    return "AccountExistsWithDifferentCredential: $message";
+  }
+}
+
+class UserDisabled extends AuthExceptions {
+  UserDisabled(super.message, super.code);
+
+  @override
+  String toString() {
+    return "UserDisabled: $message";
+  }
+}
+
+class UserNotFound extends AuthExceptions {
+  UserNotFound(super.message, super.code);
+
+  @override
+  String toString() {
+    return "UserNotFound: $message";
+  }
+}
+
+class WrongPassword extends AuthExceptions {
+  WrongPassword(super.message, super.code);
+
+  @override
+  String toString() {
+    return "WrongPassword: $message";
+  }
+}
+
+class InvalidVerificationCode extends AuthExceptions {
+  InvalidVerificationCode(super.message, super.code);
+
+  @override
+  String toString() {
+    return "InvalidVerificationCode: $message";
+  }
+}
+
+class InvalidVerificationId extends AuthExceptions {
+  InvalidVerificationId(super.message, super.code);
+
+  @override
+  String toString() {
+    return "InvalidVerificationId: $message";
+  }
+}

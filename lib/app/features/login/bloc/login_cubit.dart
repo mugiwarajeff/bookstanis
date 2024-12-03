@@ -78,8 +78,25 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future<void> signInWithGoogle() async {
-    await _authService.loginUserWithGmail();
+  Future<void> signInWithGoogle(AppLocalizations appLocalizations) async {
+    try {
+      emit(LoadingFormState(loadingMessage: appLocalizations.loggingIn));
+      await _authService.loginUserWithGmail();
+
+      emit(SuccessFormState(successMessage: appLocalizations.userLogged));
+    } on AccountExistsWithDifferentCredential catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    } on UserDisabled catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    } on UserNotFound catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    } on WrongPassword catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    } on InvalidVerificationCode catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    } on InvalidVerificationId catch (e) {
+      emit(FailedFormState(errorMesage: e.code));
+    }
   }
 
   Future<void> logoutCurrentUser() async {
