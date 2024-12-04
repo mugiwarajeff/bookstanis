@@ -59,5 +59,9 @@
     "logginMethodNotAllower": "Metodo de login nao permitido, tente outro",
     "@logginMethodNotAllower": {},
     "notPossibleToCompleteLoggin": "Nao foi possivel completar login, verifique com adminstrador",
-    "@notPossibleToCompleteLoggin": {}
+    "@notPossibleToCompleteLoggin": {},
+    "explore": "Explorar",
+    "@explore": {},
+    "myBooks": "Meus Livros",
+    "@myBooks": {}
 }

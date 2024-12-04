@@ -7,6 +7,7 @@ import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/login/service/firebase_auth_service.dart';
 import 'package:bookstanis/app/features/login/service/interface/auth_service.dart';
+import 'package:bookstanis/app/features/my_books/bloc/my_books_cubit.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
 import 'package:bookstanis/app/shared/logs/impl_message_logger.dart';
 import 'package:bookstanis/app/shared/logs/interface/message_logger.dart';
@@ -51,5 +52,8 @@ void main() async {
             create: (context) => LoginCubit(
                 RepositoryProvider.of<AuthService>(context),
                 BlocProvider.of<ProfileCubit>(context))),
+        BlocProvider<MyBooksCubit>(
+            create: (context) =>
+                MyBooksCubit(RepositoryProvider.of<BooksRepository>(context)))
       ], child: const BookstanisApp())));
 }

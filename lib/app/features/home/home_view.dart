@@ -1,6 +1,7 @@
 import 'package:bookstanis/app/features/books/books_list/books_list_view.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_state.dart';
+import 'package:bookstanis/app/features/my_books/my_books_view.dart';
 import 'package:bookstanis/app/features/profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,8 @@ class _HomeViewState extends State<HomeView> {
       case 0:
         return const BooksListView();
       case 1:
+        return const MyBooksView();
+      case 2:
         return const ProfileView();
       default:
         return const SizedBox.shrink();
@@ -32,8 +35,9 @@ class _HomeViewState extends State<HomeView> {
     final ConfigurationsCubit configurationsCubit =
         BlocProvider.of<ConfigurationsCubit>(context);
 
-    final String booksText = AppLocalizations.of(context)!.books;
+    final String exploreText = AppLocalizations.of(context)!.explore;
     final String profileText = AppLocalizations.of(context)!.profile;
+    final String myBooksText = AppLocalizations.of(context)!.myBooks;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,7 +62,9 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-              icon: const Icon(Icons.list), label: booksText),
+              icon: const Icon(Icons.manage_search_sharp), label: exploreText),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.book), label: myBooksText),
           BottomNavigationBarItem(
               icon: const Icon(Icons.person), label: profileText),
         ],
