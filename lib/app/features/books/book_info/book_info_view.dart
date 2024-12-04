@@ -136,7 +136,20 @@ class BookInfoView extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                  ],
+                ),
+              );
+            }
+
+            return const SizedBox.shrink();
+          },
+        ));
+  }
+}
+//TODO
+/**
+ * extrair para um componente
+ * Text(
                       state.book.bookStatus.name,
                       style: const TextStyle(fontSize: 18),
                     ),
@@ -149,13 +162,4 @@ class BookInfoView extends StatelessWidget {
                             style: const TextStyle(fontSize: 18),
                           )),
                     ),
-                  ],
-                ),
-              );
-            }
-
-            return const SizedBox.shrink();
-          },
-        ));
-  }
-}
+ */
