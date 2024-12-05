@@ -29,10 +29,8 @@ class BooksList extends StatelessWidget {
             scrollController.position.maxScrollExtent) {
           addMoreCallback();
 
-          print("Chegou no Final");
+          print("Chegou no Final: ${key}");
         }
-
-        
       },
     );
 
@@ -48,7 +46,6 @@ class BooksList extends StatelessWidget {
         controller: scrollController,
         crossAxisCount: gridCount,
         childAspectRatio: 0.6,
-      
         children: <Widget>[
           ...books.map((book) => BookCard(
                 bookId: book.id,

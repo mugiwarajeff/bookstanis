@@ -1,18 +1,46 @@
 import 'package:bookstanis/app/features/books/books_list/bloc/book_cubit.dart';
 import 'package:bookstanis/app/features/books/books_list/bloc/book_state.dart';
 import 'package:bookstanis/app/features/books/books_list/widgets/books_list.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BooksListView extends StatelessWidget {
-  const BooksListView({super.key});
+enum BookListType { explore, user }
+
+class BooksListView extends StatefulWidget {
+  final BookListType bookListType;
+  const BooksListView({super.key, required this.bookListType});
+
+  @override
+  State<BooksListView> createState() => _BooksListViewState();
+}
+
+class _BooksListViewState extends State<BooksListView> {
+  late BookCubit bookCubit;
+  late ProfileCubit profileCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    bookCubit = BlocProvider.of<BookCubit>(context);
+    profileCubit = BlocProvider.of<ProfileCubit>(context);
+
+    if (widget.bookListType == BookListType.explore) {
+      bookCubit.loadBooks();
+      return;
+    }
+
+    if (profileCubit.state is! LoadedProfileState) {
+      return;
+    }
+
+    bookCubit.loadBookFromUser(
+        (profileCubit.state as LoadedProfileState).user!.email);
+  }
 
   @override
   Widget build(BuildContext context) {
-    BookCubit bookCubit = BlocProvider.of<BookCubit>(context);
-
-    bookCubit.loadBooks();
-
     return BlocBuilder<BookCubit, BookState>(
       bloc: bookCubit,
       builder: (context, state) {
@@ -28,10 +56,20 @@ class BooksListView extends StatelessWidget {
 
         if (state is LoadedBookListState) {
           return BooksList(
+              key: Key(widget.key.toString()),
               books: state.books,
               addingMore: state.adddingMore,
               updateBookCallback: bookCubit.updateBook,
-              addMoreCallback: bookCubit.loadMoreBooks);
+              addMoreCallback: widget.bookListType == BookListType.explore
+                  ? bookCubit.loadMoreBooks
+                  : () async {
+                      print(" chamou");
+                      bookCubit.loadMoreBooksFromUser(
+                          (profileCubit.state as LoadedProfileState)
+                                  .user
+                                  ?.email ??
+                              "");
+                    });
         }
 
         return Container();

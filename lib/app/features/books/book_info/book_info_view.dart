@@ -2,25 +2,44 @@ import 'package:bookstanis/app/features/books/book_info/bloc/book_info_cubit.dar
 import 'package:bookstanis/app/features/books/book_info/bloc/book_info_state.dart';
 
 import 'package:bookstanis/app/features/books/books_list/widgets/books_list/start_rating.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
+import 'package:bookstanis/app/features/profile/bloc/profile_states.dart';
 import 'package:bookstanis/app/shared/widgets/friendly_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BookInfoView extends StatelessWidget {
+class BookInfoView extends StatefulWidget {
   const BookInfoView({super.key});
+
+  @override
+  State<BookInfoView> createState() => _BookInfoViewState();
+}
+
+class _BookInfoViewState extends State<BookInfoView> {
+  late ProfileCubit profileCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    profileCubit = BlocProvider.of<ProfileCubit>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final int? bookid = (ModalRoute.of(context)!.settings.arguments) as int?;
 
     final BookInfoCubit bookInfoCubit = BlocProvider.of<BookInfoCubit>(context);
+
     final Color onSurface = Theme.of(context).colorScheme.onSurface;
     final Color onPrimary = Theme.of(context).colorScheme.onPrimary;
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color tertiaryColor = Theme.of(context).colorScheme.tertiary;
 
     const double iconButtonSize = 32;
-    bookInfoCubit.loadBook(bookid);
+    bookInfoCubit.loadBook(bookid,
+        userId: profileCubit.state is LoadedProfileState
+            ? (profileCubit.state as LoadedProfileState).user?.email
+            : null);
     return Scaffold(
         appBar: AppBar(),
         body: BlocBuilder<BookInfoCubit, BookInfoState>(
@@ -40,7 +59,7 @@ class BookInfoView extends StatelessWidget {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 300,
                       width: 300,
                       child: Stack(
@@ -51,38 +70,80 @@ class BookInfoView extends StatelessWidget {
                               state.book.coverUrl,
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Builder(builder: (context) {
-                                  if (state.book.isFavorite) {
-                                    return IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.favorite,
-                                          color: primaryColor,
-                                          size: iconButtonSize,
-                                        ));
-                                  }
-                                  return IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.favorite_border,
-                                        color: Colors.grey,
-                                        size: iconButtonSize,
-                                      ));
-                                }),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.add_comment,
-                                      size: iconButtonSize,
-                                      color: tertiaryColor,
-                                    ))
-                              ],
-                            ),
+                          BlocBuilder<ProfileCubit, ProfileState>(
+                            bloc: profileCubit,
+                            builder: (context, stateProfile) {
+                              if (stateProfile is LoadedProfileState &&
+                                  stateProfile.user != null) {
+                                return Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Builder(builder: (context) {
+                                        if (state.book.isFavorite) {
+                                          return IconButton(
+                                              onPressed: () {
+                                                state.book.isFavorite = false;
+                                                bookInfoCubit
+                                                    .updateBook(state.book);
+                                              },
+                                              icon: Icon(
+                                                Icons.favorite,
+                                                color: primaryColor,
+                                                size: iconButtonSize,
+                                              ));
+                                        }
+                                        return IconButton(
+                                            onPressed: () {
+                                              state.book.isFavorite = true;
+                                              bookInfoCubit
+                                                  .updateBook(state.book);
+                                            },
+                                            icon: const Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.grey,
+                                              size: iconButtonSize,
+                                            ));
+                                      }),
+                                      Builder(builder: (context) {
+                                        if (state.userBook == null) {
+                                          return IconButton(
+                                              onPressed: () {
+                                                bookInfoCubit.addUserBook(
+                                                    stateProfile.user!.email);
+                                              },
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: tertiaryColor,
+                                              ));
+                                        }
+                                        return IconButton(
+                                            onPressed: () {
+                                              bookInfoCubit.removeUserBook();
+                                            },
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: tertiaryColor,
+                                            ));
+                                      }),
+                                      Visibility(
+                                        visible: state.userBook != null,
+                                        child: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.add_comment,
+                                              size: iconButtonSize,
+                                              color: tertiaryColor,
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
+
+                              return const SizedBox.shrink();
+                            },
                           )
                         ],
                       ),
@@ -110,10 +171,22 @@ class BookInfoView extends StatelessWidget {
                             style: TextStyle(color: onPrimary),
                           ),
                         )),
-                    StartRating(
-                        fillColor: primaryColor,
-                        ratingValue: state.book.rating,
-                        onTapStart: (value) {}),
+                    BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, profilestate) {
+                      if (state.userBook != null &&
+                          profilestate is LoadedProfileState &&
+                          profilestate.user != null) {
+                        return StartRating(
+                            fillColor: primaryColor,
+                            ratingValue: state.userBook!.rating,
+                            onTapStart: (value) {
+                              bookInfoCubit.updateUserBook(state.userBook!
+                                  .copyWith(rating: value.toDouble()));
+                            });
+                      }
+
+                      return const SizedBox.shrink();
+                    }),
                     const SizedBox(
                       height: 10,
                     ),
@@ -136,6 +209,25 @@ class BookInfoView extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    Visibility(
+                      visible: state.userBook != null,
+                      child: Text(
+                        state.userBook?.status.name ?? "",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Visibility(
+                      visible: state.userBook != null,
+                      child: Card(
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 24),
+                            child: Text(
+                              "${state.userBook?.readedPages ?? ""}/${state.book.quantPages}",
+                              style: const TextStyle(fontSize: 18),
+                            )),
+                      ),
+                    )
                   ],
                 ),
               );

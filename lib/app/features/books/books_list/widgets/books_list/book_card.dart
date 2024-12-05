@@ -51,7 +51,7 @@ class BookCard extends StatelessWidget {
               ),
             ),
             StartRating(
-                onTapStart: onStartTapStart,
+                onTapStart: (_) {},
                 fillColor: primaryColor,
                 ratingValue: bookRating ?? 0)
           ],
