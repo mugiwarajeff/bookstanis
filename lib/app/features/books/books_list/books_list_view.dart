@@ -2,15 +2,12 @@ import 'package:bookstanis/app/features/books/books_list/bloc/book_cubit.dart';
 import 'package:bookstanis/app/features/books/books_list/bloc/book_state.dart';
 import 'package:bookstanis/app/features/books/books_list/widgets/books_list.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
-import 'package:bookstanis/app/features/profile/bloc/profile_states.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum BookListType { explore, user }
-
 class BooksListView extends StatefulWidget {
-  final BookListType bookListType;
-  const BooksListView({super.key, required this.bookListType});
+  const BooksListView({super.key});
 
   @override
   State<BooksListView> createState() => _BooksListViewState();
@@ -26,17 +23,7 @@ class _BooksListViewState extends State<BooksListView> {
     bookCubit = BlocProvider.of<BookCubit>(context);
     profileCubit = BlocProvider.of<ProfileCubit>(context);
 
-    if (widget.bookListType == BookListType.explore) {
-      bookCubit.loadBooks();
-      return;
-    }
-
-    if (profileCubit.state is! LoadedProfileState) {
-      return;
-    }
-
-    bookCubit.loadBookFromUser(
-        (profileCubit.state as LoadedProfileState).user!.email);
+    bookCubit.loadBooks();
   }
 
   @override
@@ -60,16 +47,7 @@ class _BooksListViewState extends State<BooksListView> {
               books: state.books,
               addingMore: state.adddingMore,
               updateBookCallback: bookCubit.updateBook,
-              addMoreCallback: widget.bookListType == BookListType.explore
-                  ? bookCubit.loadMoreBooks
-                  : () async {
-                      print(" chamou");
-                      bookCubit.loadMoreBooksFromUser(
-                          (profileCubit.state as LoadedProfileState)
-                                  .user
-                                  ?.email ??
-                              "");
-                    });
+              addMoreCallback: bookCubit.loadMoreBooks);
         }
 
         return Container();

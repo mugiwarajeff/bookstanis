@@ -4,9 +4,6 @@ abstract class BookActions {
   Future<void> loadBooks();
   Future<void> loadMoreBooks();
 
-  Future<void> loadBookFromUser(String userId);
-  Future<void> loadMoreBooksFromUser(String userId);
-
   Future<void> updateBook(Book book);
   Future<void> removeBook(Book book);
   Future<void> createBook(Book book);

@@ -1,4 +1,5 @@
 import 'package:bookstanis/app/features/books/books_list/books_list_view.dart';
+import 'package:bookstanis/app/features/books/user_book_list/user_book_list_view.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_state.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
@@ -35,16 +36,14 @@ class _HomeViewState extends State<HomeView> {
         case 0:
           return const BooksListView(
             key: Key("book_explore_list"),
-            bookListType: BookListType.explore,
           );
         case 1:
           return BlocBuilder<ProfileCubit, ProfileState>(
               bloc: profileCubit,
               builder: (context, state) {
                 if (state is LoadedProfileState && state.user != null) {
-                  return const BooksListView(
-                    key: Key("user_book_list"),
-                    bookListType: BookListType.user,
+                  return UserBookListView(
+                    userId: state.user!.email,
                   );
                 }
 

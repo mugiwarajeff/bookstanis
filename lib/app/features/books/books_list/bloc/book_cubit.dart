@@ -51,36 +51,6 @@ class BookCubit extends Cubit<BookState> implements BookActions {
   }
 
   @override
-  Future<void> loadBookFromUser(String userId) async {
-    emit(LoadingBookListState());
-
-    try {
-      _page = 1;
-      List<Book> booksFromRepo =
-          await _booksRepository.getBooksByPageAndUser(_page, userId);
-
-      _books.clear();
-      _books.addAll(booksFromRepo);
-      _messageLogger.logLocalMessage(LogMessage(
-          category: LogMessageCategory.info,
-          message: "Lista de books obtidos da pagina $_page",
-          source: "Book Cubit",
-          timestamp: DateTime.now(),
-          userId: "System"));
-
-      emit(LoadedBookListState(books: _books, adddingMore: _addingMore));
-    } on HttpException catch (e) {
-      _messageLogger.logLocalMessage(LogMessage(
-          category: LogMessageCategory.error,
-          message: e.message,
-          source: "Book Cubit",
-          timestamp: DateTime.now(),
-          userId: "System"));
-      emit(ErrorBookState(error: e.toString()));
-    }
-  }
-
-  @override
   Future<void> loadMoreBooks() async {
     if (_addingMore) {
       return;
@@ -94,43 +64,6 @@ class BookCubit extends Cubit<BookState> implements BookActions {
       _page++;
       List<Book> moreBooksFromRepo =
           await _booksRepository.getBooksByPage(_page);
-
-      _books.addAll(moreBooksFromRepo);
-      _addingMore = false;
-
-      emit(LoadedBookListState(books: _books, adddingMore: _addingMore));
-
-      _messageLogger.logLocalMessage(LogMessage(
-          category: LogMessageCategory.info,
-          message: "Lista de books obtidos da pagina $_page",
-          source: "Book Cubit",
-          timestamp: DateTime.now(),
-          userId: "System"));
-    } on HttpException catch (e) {
-      _messageLogger.logLocalMessage(LogMessage(
-          category: LogMessageCategory.error,
-          message: e.message,
-          source: "Book Cubit",
-          timestamp: DateTime.now(),
-          userId: "System"));
-      emit(ErrorBookState(error: e.message));
-    }
-  }
-
-  @override
-  Future<void> loadMoreBooksFromUser(String userId) async {
-    if (_addingMore) {
-      return;
-    }
-
-    try {
-      _addingMore = true;
-      emit(LoadedBookListState(books: _books, adddingMore: _addingMore));
-      await Future.delayed(const Duration(seconds: 2));
-
-      _page++;
-      List<Book> moreBooksFromRepo =
-          await _booksRepository.getBooksByPageAndUser(_page, userId);
 
       _books.addAll(moreBooksFromRepo);
       _addingMore = false;

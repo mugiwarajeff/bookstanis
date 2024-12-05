@@ -3,6 +3,7 @@ import 'package:bookstanis/app/features/books/book_info/bloc/book_info_cubit.dar
 import 'package:bookstanis/app/features/books/books_list/bloc/book_cubit.dart';
 import 'package:bookstanis/app/features/books/services/book_repository_local.dart';
 import 'package:bookstanis/app/features/books/services/interface/books_repository.dart';
+import 'package:bookstanis/app/features/books/user_book_list/bloc/user_book_list_cubit.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
 import 'package:bookstanis/app/features/login/bloc/login_cubit.dart';
 import 'package:bookstanis/app/features/login/service/firebase_auth_service.dart';
@@ -37,6 +38,10 @@ void main() async {
       child: MultiBlocProvider(providers: [
         BlocProvider<BookCubit>(
             create: (context) => BookCubit(
+                RepositoryProvider.of<BooksRepository>(context),
+                RepositoryProvider.of<MessageLogger>(context))),
+        BlocProvider<UserBookListCubit>(
+            create: (context) => UserBookListCubit(
                 RepositoryProvider.of<BooksRepository>(context),
                 RepositoryProvider.of<MessageLogger>(context))),
         BlocProvider(
