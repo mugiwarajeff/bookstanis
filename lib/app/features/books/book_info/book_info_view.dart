@@ -2,6 +2,7 @@ import 'package:bookstanis/app/features/books/book_info/bloc/book_info_cubit.dar
 import 'package:bookstanis/app/features/books/book_info/bloc/book_info_state.dart';
 
 import 'package:bookstanis/app/features/books/books_list/widgets/books_list/start_rating.dart';
+import 'package:bookstanis/app/features/books/models/enums/book_status.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_cubit.dart';
 import 'package:bookstanis/app/features/profile/bloc/profile_states.dart';
 import 'package:bookstanis/app/shared/widgets/friendly_message.dart';
@@ -40,6 +41,18 @@ class _BookInfoViewState extends State<BookInfoView> {
         userId: profileCubit.state is LoadedProfileState
             ? (profileCubit.state as LoadedProfileState).user?.email
             : null);
+
+    String translateValue(BookStatus bookStatus) {
+      switch (bookStatus) {
+        case BookStatus.waiting:
+          return "Esperando";
+        case BookStatus.reading:
+          return "Em Leitura";
+        case BookStatus.completed:
+          return "Completo";
+      }
+    }
+
     return Scaffold(
         appBar: AppBar(),
         body: BlocBuilder<BookInfoCubit, BookInfoState>(
@@ -130,7 +143,44 @@ class _BookInfoViewState extends State<BookInfoView> {
                                       Visibility(
                                         visible: state.userBook != null,
                                         child: IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              showBottomSheet(
+                                                  showDragHandle: true,
+                                                  enableDrag: true,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.4,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: TextFormField(
+                                                            maxLines: 7,
+                                                            initialValue: state
+                                                                    .userBook
+                                                                    ?.notes ??
+                                                                "",
+                                                            onChanged: (value) =>
+                                                                bookInfoCubit.updateUserBook(state
+                                                                    .userBook!
+                                                                    .copyWith(
+                                                                        notes:
+                                                                            value)),
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder(),
+                                                                    label: Text(
+                                                                        "Notas")),
+                                                          ),
+                                                        ));
+                                                  });
+                                            },
                                             icon: Icon(
                                               Icons.add_comment,
                                               size: iconButtonSize,
@@ -212,7 +262,8 @@ class _BookInfoViewState extends State<BookInfoView> {
                     Visibility(
                       visible: state.userBook != null,
                       child: Text(
-                        state.userBook?.status.name ?? "",
+                        translateValue(
+                            state.userBook?.status ?? BookStatus.waiting),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
@@ -238,20 +289,3 @@ class _BookInfoViewState extends State<BookInfoView> {
         ));
   }
 }
-//TODO
-/**
- * extrair para um componente
- * Text(
-                      state.book.bookStatus.name,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    Card(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 24),
-                          child: Text(
-                            "${state.book.readedPages}/${state.book.quantPages}",
-                            style: const TextStyle(fontSize: 18),
-                          )),
-                    ),
- */
