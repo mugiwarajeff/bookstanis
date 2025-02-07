@@ -37,7 +37,7 @@ class BookCard extends StatelessWidget {
                     ? Container(
                         color: Colors.grey,
                       )
-                    : Image.asset(
+                    : Image.network(
                         bookCoverUrl ?? "",
                         fit: BoxFit.cover,
                       ),

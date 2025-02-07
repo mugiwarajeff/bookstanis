@@ -1,7 +1,8 @@
 import 'package:bookstanis/app/bookstanis_app.dart';
 import 'package:bookstanis/app/features/books/book_info/bloc/book_info_cubit.dart';
 import 'package:bookstanis/app/features/books/books_list/bloc/book_cubit.dart';
-import 'package:bookstanis/app/features/books/services/book_repository_local.dart';
+import 'package:bookstanis/app/features/books/services/book_repository_dio.dart';
+
 import 'package:bookstanis/app/features/books/services/interface/books_repository.dart';
 import 'package:bookstanis/app/features/books/user_book_list/bloc/user_book_list_cubit.dart';
 import 'package:bookstanis/app/features/configurations/bloc/configurations_cubit.dart';
@@ -19,8 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BookRepositoryLocal booksRepository = BookRepositoryLocal();
-  await booksRepository.loadRepository();
 
   FirebaseApp app = await Firebase.initializeApp();
   FirebaseAuth.instanceFor(app: app);
@@ -28,7 +27,7 @@ void main() async {
   runApp(MultiRepositoryProvider(
       providers: [
         RepositoryProvider<BooksRepository>(
-          create: (context) => booksRepository,
+          create: (context) => BookRepositoryDio(),
         ),
         RepositoryProvider<AuthService>(
             create: (context) => FirebaseAuthService()),

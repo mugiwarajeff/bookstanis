@@ -37,7 +37,7 @@ class Book {
         description = json["description"],
         category = json["category"],
         isFavorite = json["is_favorite"],
-        rating = json["rating"],
+        rating = double.tryParse(json["rating"]) ?? 0,
         quantPages = json["quant_pages"],
         author = json["author"],
         coverUrl = json["cover_url"];
@@ -52,4 +52,9 @@ class Book {
         "author": author,
         "cover_url": coverUrl
       };
+
+  @override
+  String toString() {
+    return "$name  $isFavorite";
+  }
 }

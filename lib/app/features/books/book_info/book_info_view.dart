@@ -79,7 +79,7 @@ class _BookInfoViewState extends State<BookInfoView> {
                         children: [
                           Align(
                             alignment: Alignment.center,
-                            child: Image.asset(
+                            child: Image.network(
                               state.book.coverUrl,
                             ),
                           ),
