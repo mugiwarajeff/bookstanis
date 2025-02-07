@@ -17,6 +17,7 @@ void main() {
 
     List<Book> books = await bookRepositoryDio.getBooksByPage(1);
 
+    // ignore: unused_local_variable
     for (var book in books) {
       print(books);
     }
@@ -32,6 +33,7 @@ void main() {
     print(userBook);
 
     List<Book> books = await bookRepositoryDio.getBooksByPageAndUser(1, "jeff");
+    // ignore: unused_local_variable
     for (var book in books) {
       print(books);
     }
